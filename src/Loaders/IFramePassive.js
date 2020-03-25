@@ -1,34 +1,38 @@
+// @flow
 import BasicLoader from './BasicLoader'
 import utils from '../utils'
 
+/**
+ * Passive iframe loader
+ */
 export default class IFramePassive extends BasicLoader {
+  timeout = 5000;
+  callback: (Promise<void> | {[key: string]: string}) => void = utils.noop;
+  errorCallback: (err: Error) => void = utils.noop;
+  isCompleted: boolean = false;
+  id: string = '';
+  iframe: HTMLIFrameElement = document.createElement('iframe');
 
-	constructor(url) {
+  /**
+   * It constructs things
+   */
+	constructor(url: string) {
 		super(url)
 
-		this.timeout = 5000
-		this.callback = null
 		this.isCompleted = false
     this.id = 'jso_passive_iframe_' + utils.uuid()
-
-    // Create IE + others compatible event handler
-    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent"
-    var eventer = window[eventMethod]
-    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message"
-
-    this.iframe = document.createElement('iframe')
     this.iframe.setAttribute('id', this.id)
     this.iframe.setAttribute('src', url)
 
-    this.iframe.addEventListener('load', (e) => {
+    this.iframe.addEventListener('load', () => {
+      let object = null;
 
-      let object = null
       try {
         if (this.iframe.contentWindow.location.hash) {
-          let encodedHash = this.iframe.contentWindow.location.hash.substring(1)
+          const encodedHash = this.iframe.contentWindow.location.hash.substring(1)
           object = utils.parseQueryString(encodedHash)
         } else if (this.iframe.contentWindow.location.search) {
-          let encodedHash = this.iframe.contentWindow.location.search.substring(1)
+          const encodedHash = this.iframe.contentWindow.location.search.substring(1)
           object = utils.parseQueryString(encodedHash)
         }
 
@@ -49,9 +53,12 @@ export default class IFramePassive extends BasicLoader {
 
 	}
 
+  /**
+   * Execute loader
+   */
 	execute() {
-		return new Promise((resolve, reject) => {
-			this.callback = resolve
+		return new Promise<void>((resolve, reject) => {
+			this.callback = resolve;
       this.errorCallback = reject
       document.getElementsByTagName('body')[0].appendChild(this.iframe)
 
@@ -61,13 +68,21 @@ export default class IFramePassive extends BasicLoader {
 		})
 	}
 
-
+  /**
+   * Clean up
+   */
 	_cleanup() {
-    let element = document.getElementById(this.id)
-    element.parentNode.removeChild(element)
+    const element = document.getElementById(this.id);
+
+    if (element && element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
 	}
 
-  _failed(err) {
+  /**
+   * On fail
+   */
+  _failed(err: Error): void {
     if (!this.isCompleted) {
 			if (this.errorCallback && typeof this.errorCallback === 'function') {
 				this.errorCallback(err)
@@ -77,7 +92,10 @@ export default class IFramePassive extends BasicLoader {
 		}
   }
 
-	_completed(response) {
+  /**
+   * On complete
+   */
+	_completed(response: Promise<void> | {[key: string]: string}) {
 		if (!this.isCompleted) {
 			if (this.callback && typeof this.callback === 'function') {
 				this.callback(response)

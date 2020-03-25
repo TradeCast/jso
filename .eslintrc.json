@@ -1,11 +1,28 @@
 {
+    "parser": "babel-eslint",
+    "extends": ["@tradecast/eslint-config"],
+    "rules": {
+      "no-invalid-this": "off",
+      "babel/no-invalid-this": 1,
+      "promise/always-return": "off",
+      "flowtype/require-return-type": "off",
+      "comma-dangle": ["error", "always-multiline"]
+    },
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+    },
     "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "ecmaFeatures": {
+        "ecmaVersion": 7,
+        "sourceType": "module"
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "paths": ["src"]
+            }
         }
     },
-    "rules": {
-        "semi": [2, "never"]
-    }
-}
+    "plugins": ["babel"]
+  }

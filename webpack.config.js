@@ -1,33 +1,24 @@
+// @flow
 const path = require('path')
 
 module.exports = {
-  entry: './src/JSO.js',
+  entry: ["@babel/polyfill", "./src/JSO.js"],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'jso.js',
     library: 'jso',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
   },
-  devtool: "source-map",
-
   module: {
     rules: [
       {
-        test: /\.js$/,
-        include: path.resolve(__dirname, './src'),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              ["env", {
-                  useBuiltIns: 'entry'
-              }],
-              "react"
-            ]
-          }
-        }
-      }
-
-    ]
-  }
+        test: /\.(js)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader'],
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['*', '.js'],
+  },
 }

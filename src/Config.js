@@ -1,35 +1,48 @@
-export default class Config {
+// @flow
 
-	constructor() {
-    this.config = {}
-		for(var i = 0; i < arguments.length; i++) {
-      Object.assign(this.config, arguments[i])
+/**
+ * Config
+ */
+export default class Config {
+	config = {};
+
+	/**
+	 * It constructs things
+	 */
+	constructor(...args) {
+		for(let i = 0; i < args.length; i++) {
+			Object.assign(this.config, args[i]);
 		}
 	}
 
-	has(key) {
-		var pointer = this.config
-		var splittedKeys = key.split('.')
-		var i = 0
+	/**
+	 * Check if config has key
+	 */
+	has(key: string) {
+		let pointer = this.config
+		const splittedKeys = key.split('.')
+		let i = 0
 		for(i = 0; i < splittedKeys.length; i++) {
-			if (pointer.hasOwnProperty(splittedKeys[i])) {
+			if (Object.prototype.hasOwnProperty.call(pointer, splittedKeys[i])) {
 				pointer = pointer[splittedKeys[i]]
 			} else {
 				return false
 			}
 		}
+
 		return true
 	}
 
-	getValue(key, defaultValue, isRequired) {
-		var isRequired = isRequired || false
-		var pointer = this.config
-		var splittedKeys = key.split('.')
-		var i = 0
+	/**
+	 * Gets value
+	 */
+	getValue(key: string, defaultValue: mixed, isRequiredParam?: boolean) {
+		const isRequired = Boolean(isRequiredParam)
+		let pointer = this.config
+		const splittedKeys = key.split('.')
+		let i = 0
 		for(i = 0; i < splittedKeys.length; i++) {
-
-			if (pointer.hasOwnProperty(splittedKeys[i])) {
-				// console.log("POINTING TO " + splittedKeys[i]);
+			if (Object.prototype.hasOwnProperty.call(pointer, splittedKeys[i])) {
 				pointer = pointer[splittedKeys[i]]
 			} else {
 				pointer = undefined

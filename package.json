@@ -11,48 +11,41 @@
     "postversion": "git push && git push --tags && npm publish",
     "build": "webpack --mode production --config webpack.config.js"
   },
-  "babel": {
-    "presets": [
-      "env"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/andreassolberg/jso.git"
   },
   "keywords": [
-    "oauth",
-    "authentication",
-    "authorization",
-    "rest",
-    "api",
-    "ajax",
-    "jquery"
+    "oauth"
   ],
   "files": [
     "src"
   ],
-  "eslintConfig": {
-    "env": {
-      "es6": true,
-      "browser": true,
-      "node": false
-    }
-  },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "qunit": "^2.5.1",
-    "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.12"
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.9.0",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/plugin-transform-flow-strip-types": "7.9.0",
+    "@babel/polyfill": "7.8.7",
+    "@babel/preset-env": "7.9.0",
+    "@tradecast/eslint-config": "3.1.1",
+    "babel-eslint": "10.1.0",
+    "babel-loader": "8.1.0",
+    "core-js": "3",
+    "eslint": "6.8.0",
+    "eslint-plugin-babel": "5.3.0",
+    "eslint-plugin-flowtype": "4.7.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jsdoc": "22.1.0",
+    "eslint-plugin-promise": "4.2.1",
+    "flow-bin": "0.121.0",
+    "webpack": "4.42.1",
+    "webpack-cli": "3.3.9"
   },
   "author": "Andreas Åkre Solberg",
   "license": "LGPL-2.1",
   "bugs": {
     "url": "https://github.com/andreassolberg/jso/issues"
   },
-  "homepage": "https://github.com/andreassolberg/jso",
-  "dependencies": {}
+  "homepage": "https://github.com/andreassolberg/jso"
 }

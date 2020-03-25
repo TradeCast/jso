@@ -1,9 +1,22 @@
+// @flow
+
+/**
+ * Basic Loader
+ */
 export default class BasicLoader {
-	constructor(url) {
-		console.log("Initializing a loader with url " + url)
+	url = '';
+
+	/**
+	 * It constructs things
+	 */
+	constructor(url: string) {
 		this.url = url
 	}
-	execute() {
 
+	/**
+	 * It executes? Something?
+	 */
+	execute() {
+		return Promise.resolve();
 	}
 }

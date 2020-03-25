@@ -1,18 +1,22 @@
+// @flow
 import utils from './utils'
 
+/**
+ * Holds state
+ */
 class Store {
+	/**
+	 * It constructs things
+	 */
+	constructor() {}
 
-	constructor() {
-	}
-
-	/*
-		saveState stores an object with an Identifier.
+	/**
+	 * saveState stores an object with an Identifier.
 		TODO: Ensure that both localstorage and JSON encoding has fallbacks for ancient browsers.
 		In the state object, we put the request object, plus these parameters:
 		  * restoreHash
 		  * providerID
 		  * scopes
-
 	 */
 	saveState(state, obj) {
 		localStorage.setItem("state-" + state, JSON.stringify(obj))
@@ -24,18 +28,18 @@ class Store {
 	 */
 	getState(state) {
 		// log("getState (" + state+ ")");
-		var obj = JSON.parse(localStorage.getItem("state-" + state))
+		const obj = JSON.parse(localStorage.getItem("state-" + state))
 		localStorage.removeItem("state-" + state)
 		return obj
 	}
 
 
-	/*
+	/**
 	 * Checks if a token, has includes a specific scope.
 	 * If token has no scope at all, false is returned.
 	 */
 	hasScope(token, scope) {
-		var i
+		let i
 		if (!token.scopes) return false
 		for(i = 0; i < token.scopes.length; i++) {
 			if (token.scopes[i] === scope) return true
@@ -43,15 +47,15 @@ class Store {
 		return false
 	}
 
-	/*
+	/**
 	 * Takes an array of tokens, and removes the ones that
 	 * are expired, and the ones that do not meet a scopes requirement.
 	 */
 	filterTokens(tokens, scopes) {
-		var i, j,
-			result = [],
-			now = utils.epoch(),
-			usethis
+		let i; let j;
+			const result = [];
+			const now = utils.epoch();
+			let usethis
 
 		if (!scopes) scopes = []
 
@@ -72,7 +76,7 @@ class Store {
 	}
 
 
-	/*
+	/**
 	 * saveTokens() stores a list of tokens for a provider.
 
 		Usually the tokens stored are a plain Access token plus:
@@ -85,36 +89,42 @@ class Store {
 		localStorage.setItem("tokens-" + provider, JSON.stringify(tokens))
 	}
 
+	/**
+	 * Get all tokens
+	 */
 	getTokens(provider) {
 		// log("Get Tokens (" + provider+ ")");
-		var tokens = JSON.parse(localStorage.getItem("tokens-" + provider))
+		let tokens = JSON.parse(localStorage.getItem("tokens-" + provider))
 		if (!tokens) tokens = []
 
 		utils.log("Token found when loooking up provider " + provider + " in store " + window.location.href, tokens)
 		return tokens
 	}
 
+	/**
+	 * Wipe tokens for provider
+	 */
 	wipeTokens(provider) {
 		localStorage.removeItem("tokens-" + provider)
 	}
 
-	/*
+	/**
 	 * Save a single token for a provider.
 	 * This also cleans up expired tokens for the same provider.
 	 */
 	saveToken(provider, token) {
-		var tokens = this.getTokens(provider)
+		let tokens = this.getTokens(provider)
 		tokens = this.filterTokens(tokens)
 		tokens.push(token)
 		this.saveTokens(provider, tokens)
 	}
 
-	/*
+	/**
 	 * Get a token if exists for a provider with a set of scopes.
 	 * The scopes parameter is OPTIONAL.
 	 */
 	getToken(provider, scopes) {
-		var tokens = this.getTokens(provider)
+		let tokens = this.getTokens(provider)
 		tokens = this.filterTokens(tokens, scopes)
 		if (tokens.length < 1) return null
 		return tokens[0]
@@ -122,6 +132,6 @@ class Store {
 
 }
 
-var s = new Store()
+const s = new Store()
 
 export default s

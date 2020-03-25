@@ -1,10 +1,16 @@
+// @flow
 import BasicLoader from './BasicLoader'
-import utils from '../utils'
 
+/**
+ * HTTP Redirect Loader
+ */
 export default class HTTPRedirect extends BasicLoader {
+	/**
+	 * It executes
+	 */
 	execute() {
-		return new Promise((resolve, reject) => {
-			window.location = this.url
+		return new Promise<void>(() => {
+			window.location = this.url;
 		})
 	}
 }

@@ -1,12 +1,16 @@
 {
     "presets": [
-        ["env", {
+        ["@babel/preset-env", {
+            "useBuiltIns": "usage",
+            "corejs": 3,
+            "forceAllTransforms": true,
             "targets": {
-                "browsers": ["last 2 versions", "> 5% in BE"],
-                "uglify": true
-            },
-            "debug": true
+                "browsers": ["> 0.25%", "not dead"]
+            }
         }]
     ],
-    "plugins": []
+    "plugins": [
+        ["@babel/plugin-proposal-class-properties", {"loose": false}],
+        "@babel/plugin-transform-flow-strip-types"
+    ]
 }
